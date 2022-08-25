@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #eee;
+    font-family: 'overpass', sans-serif;
+}
+
+.form{
+    width: 300px;
+    margin: 50px 0 0 100px;
+}
+
+.form h1{
+    font-weight: 400;
+    font-size: 25px;
+    text-transform: uppercase;
+}
+
+.form input,
+.form button{
+    font-family: 'overpass', sans-serif;
+    outline: none;
+    padding: 5px 20px;
+    display: block;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.form button{
+    cursor: pointer;
+    text-transform: uppercase;
+}
