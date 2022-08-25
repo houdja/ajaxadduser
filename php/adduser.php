@@ -9,24 +9,43 @@
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $today = date("Y-m-d H:i:s");
         if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-            //ajout dans la db
             try{
-                $sql = 'INSERT INTO user (username, password, email, created_at) VALUES (:username, :password, :email, :today)';
+                //vérifier si email est déja utilisé
+                $sql = 'SELECT * FROM user WHERE email = :email';
                 $stmt = $connection->prepare($sql);
                 $stmt->execute(
                     array(
-                        ':username' => $pseudo,
-                        ':password' => $password,
-                        ':email' => $email,
-                        ':today' => $today
+                        ':email' => $email
                     )
                 );
+                $user1 = $stmt->fetch(PDO::FETCH_ASSOC);
+                if($user1 === false){
+                    //ajout dans la db
+                    try{
+                        $sql = 'INSERT INTO user (username, password, email, created_at) VALUES (:username, :password, :email, :today)';
+                        $stmt = $connection->prepare($sql);
+                        $stmt->execute(
+                            array(
+                                ':username' => $pseudo,
+                                ':password' => $password,
+                                ':email' => $email,
+                                ':today' => $today
+                            )
+                        );
 
-                $success = true;
-                $msg = 'Utilisateur enregistré';
+                        $success = true;
+                        $msg = 'Utilisateur enregistré';
+                    }catch(PDOException $e){
+                        echo $e->getMessage();
+                    }
+                }else{
+                    $msg = 'Email déja utilisé';
+                }
+                
             }catch(PDOException $e){
                 echo $e->getMessage();
             }
+           
         }else{
             $msg = 'Adresse email incorrecte';
         }
